@@ -1,3 +1,7 @@
+-- FIX: Primary Key für netzwerk_user hinzufügen
+ALTER TABLE netzwerk_user ADD PRIMARY KEY (userid);
+
+-- Jetzt können die neuen Tabellen erstellt werden
 -- ADNetwork 3.0 - Neue Tabellen (CP/GSC System)
 -- Diese Tabellen erweitern die originalen Werbeflut-Tabellen
 
