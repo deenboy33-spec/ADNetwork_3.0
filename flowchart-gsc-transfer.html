@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>GSC Transfer Flowchart — Kompletter Ablauf</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 20px; background: #f8f9fa; }
+  h1 { color: #1a1a2e; }
+  .flow-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+  svg { width: 100%; height: auto; }
+  .legend { margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 8px; }
+  .legend-item { display: inline-block; margin-right: 20px; }
+  .legend-box { display: inline-block; width: 20px; height: 20px; vertical-align: middle; margin-right: 5px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<h1>🏄‍♂️ GSC Transfer — Kompletter Ablauf Flowchart</h1>
+
+<div class="flow-container">
+  <h2>Schritt 1: wwdclub.de ruft API auf</h2>
+  <svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg">
+    <!-- Verbindungen -->
+    <defs>
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+      </marker>
+    </defs>
+    
+    <!-- User -->
+    <rect x="20" y="150" width="120" height="60" rx="8" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+    <text x="80" y="175" text-anchor="middle" font-size="14" fill="#1976d2">👤 User</text>
+    <text x="80" y="195" text-anchor="middle" font-size="12" fill="#555">(jogibernd)</text>
+    
+    <!-- Arrow 1 -->
+    <line x1="140" y1="180" x2="220" y2="180" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="180" y="170" text-anchor="middle" font-size="11" fill="#666">POST Transfer</text>
+    
+    <!-- wwdclub.de -->
+    <rect x="220" y="120" width="180" height="120" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+    <text x="310" y="150" text-anchor="middle" font-size="14" fill="#e65100">🌐 wwdclub.de</text>
+    <text x="310" y="175" text-anchor="middle" font-size="11" fill="#555">gsc_transfer.php</text>
+    <text x="310" y="195" text-anchor="middle" font-size="10" fill="#666">mi_id=3</text>
+    <text x="310" y="210" text-anchor="middle" font-size="10" fill="#666">mi_pw=NWOCB...</text>
+    <text x="310" y="225" text-anchor="middle" font-size="10" fill="#666">s_pw=??</text>
+    
+    <!-- Arrow 2 -->
+    <line x1="400" y1="180" x2="480" y2="180" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="440" y="170" text-anchor="middle" font-size="11" fill="#666">HTTP GET</text>
+    
+    <!-- API -->
+    <rect x="480" y="100" width="220" height="160" rx="8" fill="#e8f5e9" stroke="#388e3c" stroke-width="2"/>
+    <text x="590" y="130" text-anchor="middle" font-size="14" fill="#2e7d32">⚡ API Endpoint</text>
+    <text x="590" y="155" text-anchor="middle" font-size="11" fill="#555">/ngm-external/shimlys/</text>
+    <text x="590" y="175" text-anchor="middle" font-size="11" fill="#555">send.php</text>
+    <text x="590" y="200" text-anchor="middle" font-size="10" fill="#666">Parameter:</text>
+    <text x="590" y="215" text-anchor="middle" font-size="10" fill="#666">api_id/api_pw (alt)</text>
+    <text x="590" y="230" text-anchor="middle" font-size="10" fill="#666">oder mi_id/mi_pw (neu)</text>
+    
+    <!-- Arrow 3 -->
+    <line x1="700" y1="180" x2="780" y2="180" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="740" y="170" text-anchor="middle" font-size="11" fill="#666">SQL Query</text>
+    
+    <!-- DB -->
+    <rect x="780" y="130" width="180" height="100" rx="8" fill="#fce4ec" stroke="#c2185b" stroke-width="2"/>
+    <text x="870" y="160" text-anchor="middle" font-size="14" fill="#880e4f">🗄️ Datenbank</text>
+    <text x="870" y="185" text-anchor="middle" font-size="11" fill="#555">vms_schnittstelle</text>
+    <text x="870" y="205" text-anchor="middle" font-size="11" fill="#555">vms_konten</text>
+    
+    <!-- Status: OK -->
+    <rect x="500" y="320" width="180" height="50" rx="8" fill="#c8e6c9" stroke="#4caf50" stroke-width="2"/>
+    <text x="590" y="340" text-anchor="middle" font-size="12" fill="#2e7d32">✅ Antwort: 1001|OK</text>
+    <text x="590" y="358" text-anchor="middle" font-size="11" fill="#555">User Balance +100k GSC</text>
+    
+    <!-- Status: Error -->
+    <rect x="220" y="320" width="180" height="50" rx="8" fill="#ffcdd2" stroke="#f44336" stroke-width="2"/>
+    <text x="310" y="340" text-anchor="middle" font-size="12" fill="#c62828">❌ Fehler: 1009</text>
+    <text x="310" y="358" text-anchor="middle" font-size="11" fill="#555">Passwort falsch</text>
+  </svg>
+</div>
+
+<div class="flow-container">
+  <h2>Schritt 2: Was passiert in send.php (API)</h2>
+  <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+      </marker>
+    </defs>
+    
+    <!-- Start -->
+    <rect x="20" y="50" width="140" height="50" rx="8" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+    <text x="90" y="75" text-anchor="middle" font-size="12" fill="#1976d2">🚀 Start send.php</text>
+    <text x="90" y="90" text-anchor="middle" font-size="10" fill="#555">GET Request</text>
+    
+    <line x1="160" y1="75" x2="220" y2="75" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+    
+    <!-- Check Params -->
+    <rect x="220" y="30" width="160" height="90" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+    <text x="300" y="55" text-anchor="middle" font-size="12" fill="#e65100">🔍 Prüfe Parameter</text>
+    <text x="300" y="75" text-anchor="middle" font-size="10" fill="#555">mi_id, mi_pw, s_id</text>
+    <text x="300" y="90" text-anchor="middle" font-size="10" fill="#555">s_pw, n (Betrag)</text>
+    <text x="300" y="105" text-anchor="middle" font-size="10" fill="#555">Falls leer: 1002 Fehler</text>
+    
+    <line x1="380" y1="75" x2="440" y2="75" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+    
+    <!-- Check wwdclub -->
+    <rect x="440" y="20" width="200" height="110" rx="8" fill="#e8f5e9" stroke="#388e3c" stroke-width="2"/>
+    <text x="540" y="45" text-anchor="middle" font-size="12" fill="#2e7d32">🔄 Konvertierung</text>
+    <text x="540" y="65" text-anchor="middle" font-size="10" fill="#555">Falls api_id=19:</text>
+    <text x="540" y="80" text-anchor="middle" font-size="10" fill="#555">→ mi_id = api_id</text>
+    <text x="540" y="95" text-anchor="middle" font-size="10" fill="#555">→ mi_pw = api_pw</text>
+    <text x="540" y="110" text-anchor="middle" font-size="10" fill="#555">→ s_id = user_id</text>
+    <text x="540" y="125" text-anchor="middle" font-size="10" fill="#555">→ s_pw = user_pw</text>
+    
+    <line x1="540" y1="130" x2="540" y2="180" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+    
+    <!-- DB Check SMI -->
+    <rect x="440" y="180" width="200" height="90" rx="8" fill="#fce4ec" stroke="#c2185b" stroke-width="2"/>
+    <text x="540" y="205" text-anchor="middle" font-size="12" fill="#880e4f">🗄️ SMI-Account prüfen</text>
+    <text x="540" y="225" text-anchor="middle" font-size="10" fill="#555">SELECT FROM</text>
+    <text x="540" y="240" text-anchor="middle" font-size="10" fill="#555">vms_schnittstelle</text>
+    <text x="540" y="255" text-anchor="middle" font-size="10" fill="#555">WHERE id=3 OR name='3'</text>
+    
+    <line x1="440" y1="225" x2="380" y2="225" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+    
+    <!-- Result OK -->
+    <rect x="220" y="180" width="160" height="90" rx="8" fill="#c8e6c9" stroke="#4caf50" stroke-width="2"/>
+    <text x="300" y="205" text-anchor="middle" font-size="12" fill="#2e7d32">✅ SMI gefunden</text>
+    <text x="300" y="225" text-anchor="middle" font-size="10" fill="#555">kontostand = 99.9M</text>
+    <text x="300" y="245" text-anchor="middle" font-size="10" fill="#555">Guthaben OK?</text>
+    
+    <line x1="220" y1="225" x2="160" y2="225" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+    
+    <!-- Check User -->
+    <rect x="20" y="180" width="140" height="90" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+    <text x="90" y="205" text-anchor="middle" font-size="12" fill="#e65100">👤 User prüfen</text>
+    <text x="90" y="225" text-anchor="middle" font-size="10" fill="#555">SELECT FROM</text>
+    <text x="90" y="240" text-anchor="middle" font-size="10" fill="#555">vms_konten</text>
+    <text x="90" y="255" text-anchor="middle" font-size="10" fill="#555">WHERE k_username=s_id</text>
+    
+    <line x1="90" y1="270" x2="90" y2="330" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+    
+    <!-- Check Password -->
+    <rect x="20" y="330" width="140" height="90" rx="8" fill="#ffcdd2" stroke="#f44336" stroke-width="2"/>
+    <text x="90" y="355" text-anchor="middle" font-size="12" fill="#c62828">🔐 Passwort prüfen</text>
+    <text x="90" y="375" text-anchor="middle" font-size="10" fill="#555">s_pw (Transfer-PW)</text>
+    <text x="90" y="395" text-anchor="middle" font-size="10" fill="#555">Stimmt mit DB?</text>
+    
+    <line x1="160" y1="375" x2="220" y2="375" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+    
+    <!-- Decision -->
+    <polygon points="300,330 360,375 300,420 240,375" fill="#e1bee7" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="300" y="372" text-anchor="middle" font-size="11" fill="#4a148c">Passwort</text>
+    <text x="300" y="385" text-anchor="middle" font-size="11" fill="#4a148c">OK?</text>
+    
+    <!-- Nein -->
+    <line x1="240" y1="375" x2="180" y2="375" stroke="#f44336" stroke-width="2" marker-end="url(#arrow2)"/>
+    <text x="200" y="365" text-anchor="middle" font-size="10" fill="#c62828">Nein → 1009</text>
+    
+    <!-- Ja -->
+    <line x1="360" y1="375" x2="440" y2="375" stroke="#4caf50" stroke-width="2" marker-end="url(#arrow2)"/>
+    <text x="400" y="365" text-anchor="middle" font-size="10" fill="#2e7d32">Ja → Transaktion</text>
+    
+    <!-- Transaktion -->
+    <rect x="440" y="330" width="200" height="90" rx="8" fill="#c8e6c9" stroke="#4caf50" stroke-width="2"/>
+    <text x="540" y="355" text-anchor="middle" font-size="12" fill="#2e7d32">💰 Transaktion</text>
+    <text x="540" y="375" text-anchor="middle" font-size="10" fill="#555">SMI -100k GSC</text>
+    <text x="540" y="390" text-anchor="middle" font-size="10" fill="#555">User +100k GSC</text>
+    <text x="540" y="405" text-anchor="middle" font-size="10" fill="#555">Buchung speichern</text>
+    
+    <line x1="640" y1="375" x2="720" y2="375" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+    
+    <!-- Antwort -->
+    <rect x="720" y="330" width="200" height="90" rx="8" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+    <text x="820" y="355" text-anchor="middle" font-size="12" fill="#1976d2">📤 Antwort</text>
+    <text x="820" y="375" text-anchor="middle" font-size="10" fill="#555">1001|OK|balance|</text>
+    <text x="820" y="390" text-anchor="middle" font-size="10" fill="#555">booking_id|user_bal</text>
+    
+  </svg>
+</div>
+
+<div class="flow-container">
+  <h2>Schritt 3: Datenbank Struktur (was existiert)</h2>
+  <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg">
+    
+    <!-- vms_schnittstelle -->
+    <rect x="20" y="20" width="280" height="120" rx="8" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+    <text x="160" y="45" text-anchor="middle" font-size="14" fill="#1976d2">🗄️ vms_schnittstelle</text>
+    <text x="160" y="70" text-anchor="middle" font-size="11" fill="#555">id=3, name='wwdclub'</text>
+    <text x="160" y="90" text-anchor="middle" font-size="11" fill="#555">passwort='NWOCB...'</text>
+    <text x="160" y="110" text-anchor="middle" font-size="11" fill="#555">kontostand=99.5M GSC</text>
+    <text x="160" y="130" text-anchor="middle" font-size="10" fill="#666">(SMI-Account von wwdclub)</text>
+    
+    <!-- vms_konten -->
+    <rect x="360" y="20" width="280" height="120" rx="8" fill="#e8f5e9" stroke="#388e3c" stroke-width="2"/>
+    <text x="500" y="45" text-anchor="middle" font-size="14" fill="#2e7d32">👤 vms_konten</text>
+    <text x="500" y="70" text-anchor="middle" font-size="11" fill="#555">id=1, k_username='jogibernd'</text>
+    <text x="500" y="90" text-anchor="middle" font-size="11" fill="#555">k_passwort='testpass123'</text>
+    <text x="500" y="110" text-anchor="middle" font-size="11" fill="#555">k_guthaben=3.9M GSC</text>
+    <text x="500" y="130" text-anchor="middle" font-size="10" fill="#666">(User-Konto)</text>
+    
+    <!-- vms_schnittstelle_buchungen -->
+    <rect x="700" y="20" width="280" height="120" rx="8" fill="#fce4ec" stroke="#c2185b" stroke-width="2"/>
+    <text x="840" y="45" text-anchor="middle" font-size="14" fill="#880e4f">📝 vms_schnittstelle_buchungen</text>
+    <text x="840" y="70" text-anchor="middle" font-size="11" fill="#555">21 Einträge</text>
+    <text x="840" y="90" text-anchor="middle" font-size="11" fill="#555">Letzter: 100k GSC</text>
+    <text x="840" y="110" text-anchor="middle" font-size="11" fill="#555">Status: completed</text>
+    <text x="840" y="130" text-anchor="middle" font-size="10" fill="#666">(Transaktionslog)</text>
+    
+    <!-- Problem -->
+    <rect x="360" y="180" width="280" height="80" rx="8" fill="#ffcdd2" stroke="#f44336" stroke-width="2"/>
+    <text x="500" y="205" text-anchor="middle" font-size="13" fill="#c62828">⚠️ PROBLEM</text>
+    <text x="500" y="225" text-anchor="middle" font-size="11" fill="#555">Keine CP-Tabelle vorhanden!</text>
+    <text x="500" y="245" text-anchor="middle" font-size="11" fill="#555">Kein Kontoauszug sichtbar!</text>
+    
+  </svg>
+</div>
+
+<div class="legend">
+  <h3>🎯 Aktueller Status</h3>
+  <div class="legend-item"><span class="legend-box" style="background:#c8e6c9;border:2px solid #4caf50;"></span> ✅ Funktioniert</div>
+  <div class="legend-item"><span class="legend-box" style="background:#ffcdd2;border:2px solid #f44336;"></span> ❌ Problem</div>
+  <div class="legend-item"><span class="legend-box" style="background:#fff3e0;border:2px solid #f57c00;"></span> ⚠️ Wichtig</div>
+  <br><br>
+  <p><strong>WAS FUNKTIONIERT:</strong> Die API empfängt Requests, prüft Passwörter, führt Transaktionen durch, speichert Buchungen.</p>
+  <p><strong>WAS NICHT FUNKTIONIERT:</strong> Die GSC werden dem User-Konto gutgeschrieben (k_guthaben steigt), aber es gibt keine CP-Tabelle und keinen sichtbaren Kontoauszug auf adcitycentral.net.</p>
+  <p><strong>DEIN TRANSFER-PASSWORT:</strong> Das Passwort in der DB ist 'testpass123', aber du hast ein anderes auf adcitycentral.net. Das ist der Grund für "1009 Fehler".</p>
+</div>
+
+</body>
+</html>

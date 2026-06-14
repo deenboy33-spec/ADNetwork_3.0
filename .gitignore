@@ -1,0 +1,30 @@
+# Logs
+logs/*.log
+logs/*.txt
+
+# Datenbank-Backups (große Dateien)
+database/backup/
+*.sql.gz
+*.sql.zip
+
+# Lokale Konfiguration
+config/local.php
+config/.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies (falls Composer/NPM genutzt wird)
+node_modules/
+vendor/
+
+# Temp
+*.tmp
+temp/
+cache/
